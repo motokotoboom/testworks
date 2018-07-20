@@ -1,0 +1,75 @@
+---
+- name: Install required packages
+  hosts: all
+  become: yes
+
+
+  tasks:
+  - name: Wait for ssh
+    become: no
+    wait_for:
+      state: started
+      port: 22
+      host: "{{ ansible_host }}"
+      # delay: 10
+      timeout: 60
+      connect_timeout: 60
+      search_regex: OpenSSH
+    delegate_to: localhost
+  - debug:
+      var: ansible_host
+    
+  - name: Install docker.io
+    apt: name=docker.io
+
+  - name: Add user ubuntu to docker group
+    user:
+      name: ubuntu
+      groups: docker
+      append: yes
+
+- name: Init and run docker swarm cluster
+  hosts: managers
+  become: yes
+  tasks:
+    - name: Check if swarm master node is running already
+      shell: docker info
+      register: docker_info
+      changed_when: false
+      
+    - name: Create primary swarm manager
+      shell: docker swarm init --advertise-addr {{ ansible_eth0['ipv4']['address'] }}
+      when: "docker_info.stdout.find('Swarm: inactive') != -1"
+      changed_when: false
+    
+    - name: Check if status changed
+      shell: docker info
+      register: docker_new_info
+      changed_when: "docker_info.stdout.find('Swarm: inactive') != docker_new_info.stdout.find('Swarm: inactive')" 
+      
+
+    - name: Get docker swarm worker token
+      shell: docker swarm join-token worker -q
+      register: worker_token
+      changed_when: false
+    #  - debug: msg="{{worker_token.stdout}}"
+
+- name: Run worker
+  hosts: workers
+  become: yes
+  tasks:
+    - name: Check if node joined already
+      shell: docker info
+      register: docker_info
+      changed_when: false
+
+    - name: Join manager with given token
+      shell: docker swarm join --token {{ hostvars['manager']['worker_token']['stdout'] }} {{ hostvars['manager']['ansible_eth0']['ipv4']['address'] }}:2377
+      when: "hostvars['manager'].docker_new_info.stdout.find('Swarm: active') != -1 and docker_info.stdout.find('Swarm: inactive') != -1"
+    # - debug: 
+    #      var: "docker_info.stdout"
+ 
+    
+
+   
+
