@@ -1,18 +1,11 @@
-#!groovy
-pipeline {
-  agent none
-  stages {
-    stage('php test') {
-      agent {
-        docker {
-          image 'php'
+pipeline{
+    agent any
+    stages {
+        stage('Compile Stage') {
+            steps {
+                checkout('https://github.com/motokotoboom/testworks.git')
+
+            }
         }
-        steps {
-            checkout scm
-            echo 'done'
-        }
-      }
-  
-    } 
-  }
+    }
 }
