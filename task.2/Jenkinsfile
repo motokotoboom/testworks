@@ -2,12 +2,17 @@
 pipeline {
   agent none
   stages {
-    stage('PHP7 Install') {
+    stage('php test') {
       agent {
         docker {
           image 'php'
         }
+        steps {
+            checkout scm
+            echo 'done'
+        }
       }
+  
     } 
   }
 }
