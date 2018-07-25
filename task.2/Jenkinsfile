@@ -8,13 +8,7 @@ pipeline{
                 sh 'apt install docker.io'
             }
         }
-        stage('run apache php service '){
-             withEnv([
-                "DOCKER_HOST=tcp://${env.PROD_IP}:2376",
-                ]) {
-                sh 'docker service create  -p 80:80 --name my-apache-php-app --mount type=bind,source=/home/ubuntu/jenkins/workspace/test.2.deploy/task.2,target=/var/www/html php:7.0-apache' 
-            }
-        }
+
     }
 }
 
