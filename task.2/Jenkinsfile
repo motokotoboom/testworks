@@ -1,11 +1,16 @@
 pipeline{
     agent any
     stages {
-        stage('Compile Stage') {
+        stage('Get source') {
             steps {
                 echo 'getting source'
                 checkout scm
             }
         }
+        stage('run apache php service '){
+            sh 'docker service create  -p 80:80 --name my-apache-php-app --mount type=bind,source=/home/ubuntu/jenkins/workspace/test.2.deploy/task.2,target=/var/www/html php:7.0-apache' 
+        }
     }
 }
+
+#
