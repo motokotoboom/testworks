@@ -3,8 +3,8 @@ pipeline{
     stages {
         stage('Compile Stage') {
             steps {
-                checkout('https://github.com/motokotoboom/testworks.git')
-
+                echo 'getting source'
+                checkout scm
             }
         }
     }
