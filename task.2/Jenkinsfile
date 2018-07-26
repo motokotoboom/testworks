@@ -5,7 +5,7 @@ pipeline{
             steps {
                 echo 'getting source'
                 checkout scm
-                sh 'apt install docker.io'
+   
             }
         }
         stage('running php-apache'){
