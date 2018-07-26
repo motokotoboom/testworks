@@ -8,6 +8,12 @@ pipeline{
                 sh 'apt install docker.io'
             }
         }
+        stage('running php-apache'){
+            steps{
+                echo 'run php-apache docker image'           
+                sh 'docker service create  -p 80:80 --name task.2.apache-php --mount type=bind,source=/home/ubuntu/jenkins/workspace/test.2.deploy/task.2,target=/var/www/html php:7.0-apache' 
+            }
+        }
 
     }
 }
