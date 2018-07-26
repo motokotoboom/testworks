@@ -11,7 +11,7 @@ pipeline{
         stage('running php-apache'){
             steps{
                 echo 'run php-apache docker image'           
-                sh 'docker service create  -p 80:80 --name task-2-apache --mount type=bind,source=/var/www/html,target=/var/www/html php:7.0-apache' 
+                sh 'docker service create  -p 80:80 --name task-2-apache --mount type=bind,source=/home/ubuntu/jenkins/workspace/test.2.deploy/task.2,target=/var/www/html php:7.0-apache' 
             }
         }
 
