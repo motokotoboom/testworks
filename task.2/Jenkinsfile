@@ -11,7 +11,7 @@ pipeline{
             steps{
                 echo 'run php-apache docker image'           
                 sh '''
-                cp -Rf /home/ubuntu/.jenkins/jobs/$JOB_NAME/workspace/ /var/www/html/;
+                cp -Rf /home/ubuntu/jenkins/jobs/$JOB_NAME/workspace/ /var/www/html/;
                 pwd
                 echo $JOB_NAME
                 '''
