@@ -11,8 +11,9 @@ pipeline{
             steps{
                 echo 'run php-apache docker image'           
                 sh '''
-                cp -Rf /home/ubuntu/.jenkins/jobs/${env.JOB_NAME}./workspace/ /var/www/html/;
+                cp -Rf /home/ubuntu/.jenkins/jobs/$JOB_NAME./workspace/ /var/www/html/;
                 pwd
+                echo $JOB_NAME
                 '''
                 sh '''
                 if [ \"`docker service ls --filter=\"name=task-2-apache\" | wc -l`\" != \"2\" ]; then 
