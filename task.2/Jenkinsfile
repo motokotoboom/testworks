@@ -11,7 +11,7 @@ pipeline{
             steps{
                 echo 'run php-apache docker image'           
                 sh '''
-                if [ \"`docker service ls --filter="name=task-2-apache\" | wc -l`\" != \"2\" ]; then 
+                if [ \"`docker service ls --filter=\"name=task-2-apache\" | wc -l`\" != \"2\" ]; then 
                     HOST=`/sbin/ip route|awk '/default/ { print $3 }'` \
                     docker service create\
                      --replicas=2 -p 80:80 \
