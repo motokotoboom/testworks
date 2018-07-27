@@ -5,8 +5,6 @@ pipeline{
             steps {
                 echo 'getting source'
                 checkout scm
-
-   
             }
         }
         stage('running php-apache'){
@@ -17,8 +15,6 @@ pipeline{
                 else \
                     echo "Service is running aleady"; \
                 fi'
-
-
             }
         }
 
