@@ -12,7 +12,7 @@ pipeline{
                 echo 'run php-apache docker image'           
                 sh '''
                 pwd;echo $JOB_NAME;ls /var;
-                cp -Rf /var/jenkins_home/jobs/$JOB_NAME/workspace/ /var/www/html/;
+                cp -f /var/jenkins_home/jobs/$JOB_NAME/workspace/task.2/index.php /var/www/html/;
                
                 '''
                 sh '''
