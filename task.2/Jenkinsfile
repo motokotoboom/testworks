@@ -11,7 +11,10 @@ pipeline{
             steps{
                 echo 'run php-apache docker image'           
                 sh '''
-                cp -Rf /home/ubuntu/.jenkins/jobs/${env.JOB_NAME}./workspace/ /var/www/html/ &
+                cp -Rf /home/ubuntu/.jenkins/jobs/${env.JOB_NAME}./workspace/ /var/www/html/;
+                pwd
+                '''
+                sh '''
                 if [ \"`docker service ls --filter=\"name=task-2-apache\" | wc -l`\" != \"2\" ]; then 
                     HOST=`/sbin/ip route|awk '/default/ { print $3 }'` 
                     docker service create --replicas=2 -p 80:80 --name task-2-apache --mount 'type=volume,src=www-root,volume-driver=local,dst=/var/www/html,volume-nocopy=true,volume-opt=type=nfs,volume-opt=device=:/var/www/html,volume-opt=o=addr=$HOST' php:7.0-apache
