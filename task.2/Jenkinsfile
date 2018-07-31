@@ -12,7 +12,7 @@ pipeline{
                 echo 'run php-apache docker image'           
                 sh '''
                 pwd;echo $JOB_NAME;ls /var;
-                cp -gitf /var/jenkins_home/workspace/$JOB_NAME/task.2/index.php /var/www/html/;
+                cp -f /var/jenkins_home/workspace/$JOB_NAME/task.2/index.php /var/www/html/;
                 '''
                 sh '''
                 if [ \"`docker service ls --filter=\"name=task-2-apache\" | wc -l`\" != \"2\" ]; then 
