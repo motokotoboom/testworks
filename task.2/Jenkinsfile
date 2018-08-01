@@ -17,9 +17,9 @@ pipeline{
                 '''
                 sh '''
                 if [ \"`docker service ls --filter=\"name=task-2-apache\" | wc -l`\" != \"2\" ]; then
+                    ip address show eth0 | sed -nr 's/.*inet ([^\\/]+).*/\\1/p' > /tmp/host
                     
-                    
-		            HOST=`ip address show eth0 | sed -nr 's/.*inet ([^\\/]+).*/\\1/p'` docker service create --replicas=2 -p 80:80 --name task-2-apache --mount 'type=volume,volume-driver=local,dst=/var/www/html,volume-opt=type=nfs,volume-opt=device=:/var/www/html/,volume-opt=o=addr=$HOST,volume-nocopy=true' php:7.0-apache 
+		            docker service create --replicas=2 -p 80:80 --name task-2-apache --mount 'type=volume,volume-driver=local,dst=/var/www/html,volume-opt=type=nfs,volume-opt=device=:/var/www/html/,volume-opt=o=addr=`cat /tmp/host`,volume-nocopy=true' php:7.0-apache 
                 fi
                 '''
             }
