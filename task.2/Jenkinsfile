@@ -1,8 +1,6 @@
 pipeline{
     agent any
-    environment {
-        HOST=`ip address show eth0 | sed -nr 's/.*inet ([^\\/]+).*/\\1/p'`
-    }
+
     stages {
         stage('Get source') {
             steps {
@@ -18,6 +16,7 @@ pipeline{
                 cp -f /var/jenkins_home/workspace/$JOB_NAME/task.2/index.php /var/www/html/;
                 '''
                 sh '''
+                HOST=`ip address show eth0 | sed -nr 's/.*inet ([^\\/]+).*/\\1/p'`
                 echo $HOST
                 echo \$HOST
                 echo ${HOST}
